@@ -7,9 +7,9 @@ This is Postman script to test Design Automation of Revit with [Room Extract](..
 1. **Forge Account**: Learn how to create a Forge Account, activate subscription and create an app at [this tutorial](http://learnforge.autodesk.io/#/account/). Make sure to select the service **Design Automation V3**.
 
 2. Install Postman and import [collection](RoomExtractor.postman_collection.json) and [enviroment variables](RoomExtractor.postman_environment.json)
-![thumbnail](img/postman.png)   
+![thumbnail](img/postman.png| width=200)   
 3. Input  enviroment variables client Id and client Secret which come from the step #1. Input enviroment variables dasNickName with your own prefarable name 
-![thumbnail](img/var.png)   
+![thumbnail](img/var.png| width=200)   
 4. Build the project [Room Extract](../plugin) to generate the [app bundle](../plugin/) zip. Note: ensure the event delegation in [OnStartup]() has swtiched to 
 ````
 DesignAutomationBridge.DesignAutomationReadyEvent += HandleDesignAutomationReadyEvent;
