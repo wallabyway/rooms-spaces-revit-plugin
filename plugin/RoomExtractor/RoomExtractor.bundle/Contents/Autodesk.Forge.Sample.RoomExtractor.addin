@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+    <AddIn Type="DBApplication">
+        <Name>RoomExtractor</Name>
+        <Assembly>RoomExtractor.dll</Assembly>
+        <AddInId>08DD8EF5-38AC-4A2D-BE38-EFF01DE1AA90</AddInId>
+        <FullClassName>RoomExtractor.RoomExtractor</FullClassName>
+        <Description>"Room Extractor"</Description>
+        <VendorId>Autodesk</VendorId>
+        <VendorDescription>
+        </VendorDescription>
+    </AddIn>
+</RevitAddIns>

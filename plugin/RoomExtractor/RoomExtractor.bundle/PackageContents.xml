@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ApplicationPackage Name="RoomExtractor" Description="Room Extractor" Author="Autodesk">
+  <CompanyDetails Name="Autodesk, Inc" Url="" Email="forge.help@autodesk.com"/>
+  <Components Description="Room Extractor">
+    <RuntimeRequirements SeriesMax="R2019" SeriesMin="R2019" Platform="Revit" OS="Win64"/>
+    <ComponentEntry LoadOnRevitStartup="True" LoadOnCommandInvocation="False" AppDescription="Room Extractor" ModuleName="./Contents/Autodesk.Forge.Sample.RoomExtractor.addin" Version="1.0.0" AppName="Room Extractor"/>
+  </Components>
+</ApplicationPackage>
