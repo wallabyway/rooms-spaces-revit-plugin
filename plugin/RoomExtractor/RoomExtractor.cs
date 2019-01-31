@@ -4,6 +4,7 @@ using Autodesk.Revit.DB.Architecture;
 using DesignAutomationFramework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,10 @@ namespace RoomExtractor
     public class RoomExtractor: IExternalDBApplication
     { 
         public ExternalDBApplicationResult OnStartup(Autodesk.Revit.ApplicationServices.ControlledApplication app){
+            
+            //event for design automation
             DesignAutomationBridge.DesignAutomationReadyEvent += HandleDesignAutomationReadyEvent;
+            //event for local test
             //app.ApplicationInitialized += HandleApplicationInitializedEvent;
 
             return ExternalDBApplicationResult.Succeeded;
@@ -25,14 +29,18 @@ namespace RoomExtractor
         //local test entry point
         public void HandleApplicationInitializedEvent(object sender, Autodesk.Revit.DB.Events.ApplicationInitializedEventArgs e){
             try
-            {
+            { 
+
                 Autodesk.Revit.ApplicationServices.Application app = sender as Autodesk.Revit.ApplicationServices.Application;
-                DesignAutomationData data = new DesignAutomationData(app, @"c:\rac_advanced_sample_project.rvt");
+
+                DesignAutomationData data = new DesignAutomationData(app, @"c:\temp\rac_advanced_sample_project.rvt");
+                //DesignAutomationData data = new DesignAutomationData(app, @"c:\temp\result.rvt");
+
                 DoJob(data);
             }
             catch(Exception ex)
             {
-                throw new InvalidOperationException("Could not ini application!"); 
+                throw new InvalidOperationException("Could not ini application!");
             }
         } 
         public ExternalDBApplicationResult OnShutdown(Autodesk.Revit.ApplicationServices.ControlledApplication app){
@@ -55,10 +63,10 @@ namespace RoomExtractor
             if (String.IsNullOrWhiteSpace(modelPath)) throw new InvalidDataException(nameof(modelPath));
 
             Document rvtDoc = data.RevitDoc;
-            if (rvtDoc == null) throw new InvalidOperationException("Could not open document.");
+            if (rvtDoc == null) throw new InvalidOperationException("Could not open document!");
 
-            Autodesk.Revit.DB.View view;
-            view = rvtDoc.ActiveView;
+            //add shared parameter definition
+            AddSetOfSharedParameters(rvtDoc);  
 
             try
             {
@@ -66,7 +74,7 @@ namespace RoomExtractor
                 // Deleting existing DirectShape 
                 // might need to filter out the shapes for room only? 
                 // get ready to filter across just the elements visible in a view 
-                FilteredElementCollector coll = new FilteredElementCollector(rvtDoc);
+                FilteredElementCollector coll = new FilteredElementCollector(rvtDoc );
                 coll.OfClass(typeof(DirectShape));
                 IEnumerable<DirectShape> DSdelete = coll.Cast<DirectShape>();
 
@@ -95,6 +103,8 @@ namespace RoomExtractor
                 m_Collector.OfCategory(BuiltInCategory.OST_Rooms);
                 IList<Element> m_Rooms = m_Collector.ToElements();
                 int roomNbre = 0;
+
+                ElementId roomId = null;
 
                 //  Iterate the list and gather a list of boundaries
                 foreach (Room room in m_Rooms)
@@ -130,11 +140,7 @@ namespace RoomExtractor
 
                             //  The array of boundary curves
                             CurveArray m_CurveArray = new CurveArray();
-                            //  Iterate to gather the curve objects
 
-
-                            TessellatedShapeBuilder builder = new TessellatedShapeBuilder();
-                            builder.OpenConnectedFaceSet(true);
 
                             // Add Direct Shape
                             List<CurveLoop> curveLoopList = new List<CurveLoop>();
@@ -144,7 +150,7 @@ namespace RoomExtractor
                                 int iBoundary = 0, iSegment;
 
                                 foreach (IList<BoundarySegment> b in boundaries) // 2012
-                                {
+                                {   
                                     List<Curve> profile = new List<Curve>();
                                     ++iBoundary;
                                     iSegment = 0;
@@ -169,7 +175,7 @@ namespace RoomExtractor
                                     }
 
                                 }
-                            } 
+                            }
 
                             try
                             {
@@ -184,30 +190,27 @@ namespace RoomExtractor
                                 XYZ ptNormal = new XYZ(0, 0, 100);
                                 //  The plane to extrude the mass from
                                 Plane m_Plane = Plane.CreateByNormalAndOrigin(ptNormal, pt1);
-                                // SketchPlane m_SketchPlane = m_FamDoc.FamilyCreate.NewSketchPlane(m_Plane);
                                 SketchPlane m_SketchPlane = SketchPlane.Create(rvtDoc, m_Plane); // 2014
 
-                                Location loc = room.Location;
-
-                                LocationPoint lp = loc as LocationPoint;
-
+                                //height of room
+                                Location loc = room.Location; 
+                                LocationPoint lp = loc as LocationPoint; 
                                 Level oBelow = getNearestBelowLevel(rvtDoc, lp.Point.Z);
-                                Level oUpper = getNearestUpperLevel(rvtDoc, lp.Point.Z);
-
+                                Level oUpper = getNearestUpperLevel(rvtDoc, lp.Point.Z); 
                                 double height = oUpper.Elevation - oBelow.Elevation;
 
                                 Solid roomSolid;
-
-                                // Solid roomSolid = GeometryCreationUtilities.CreateRevolvedGeometry(frame, new CurveLoop[] { curveLoop }, 0, 2 * Math.PI, options);
                                 roomSolid = GeometryCreationUtilities.CreateExtrusionGeometry(curveLoopList, ptNormal, height);
 
                                 DirectShape ds = DirectShape.CreateElement(rvtDoc, new ElementId(BuiltInCategory.OST_GenericModel));
 
-                                ds.SetShape(new GeometryObject[] { roomSolid }); 
+                                ds.SetShape(new GeometryObject[] { roomSolid });
+
+                                //make a note with room number
+                                roomId = ds.Id; 
 
                                 roomNbre += 1;
-
-
+                                tr.Commit(); 
 
                             }
                             catch (Exception e)
@@ -215,25 +218,37 @@ namespace RoomExtractor
                                 Console.WriteLine(e.Message);
 
                             }
-                            tr.Commit();
+
 
                         }
 
+                        using (Transaction tx = new Transaction(rvtDoc))
+                        {
+                            tx.Start("Change P");
+
+                            Element readyDS = rvtDoc.GetElement(roomId);
+                            Parameter p = readyDS.LookupParameter("RoomNumber");
+                            if (p != null)
+                            {
+                                p.Set(room.Number.ToString());
+                            }
+                            tx.Commit();
+                        }
+                        Debug.Write("room id:" + roomId.IntegerValue.ToString());
+
                     }
-                }
+                } 
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new InvalidOperationException(ex.ToString());
             }
 
 
             ModelPath path = ModelPathUtils.ConvertUserVisiblePathToModelPath("result.rvt");
-            rvtDoc.SaveAs(path, new SaveAsOptions()); 
-
-
+            rvtDoc.SaveAs(path, new SaveAsOptions());  
 
         }
 
@@ -247,6 +262,59 @@ namespace RoomExtractor
         private static Level getNearestUpperLevel(Document doc, double _Zvaue)
         {
             return new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().Where(x => x.Elevation > _Zvaue).OrderBy(x => x.Elevation).FirstOrDefault();
+        }
+
+        private static String GetRandomSharedParameterFileName()
+        {
+
+            String randomFileName = System.IO.Path.GetRandomFileName();
+            String fileRoot = Path.GetFileNameWithoutExtension(randomFileName);
+            String spFile = Path.ChangeExtension(randomFileName, "txt"); 
+            String filePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), spFile);
+            StreamWriter writer = File.CreateText(filePath);
+            writer.Close();
+            return filePath;
+        }
+
+        public static void AddSetOfSharedParameters(Document doc)
+        {
+            Application app = doc.Application;
+
+            String filePath = GetRandomSharedParameterFileName();
+
+            app.SharedParametersFilename = filePath;
+
+            DefinitionFile dFile = app.OpenSharedParameterFile();
+            DefinitionGroup dGroup = dFile.Groups.Create("Demo group");
+            List<SharedParameterBindingManager> managers = BuildSharedParametersToCreate();
+            using (Transaction t = new Transaction(doc, "Bind parameters"))
+            {
+                t.Start();
+                foreach (SharedParameterBindingManager manager in managers)
+                {
+                    manager.Definition = dGroup.Definitions.Create(manager.GetCreationOptions());
+                    manager.AddBindings(doc);
+                }
+                t.Commit();
+            }
+        }
+
+        private static List<SharedParameterBindingManager> BuildSharedParametersToCreate()
+        {
+            List<SharedParameterBindingManager> sharedParametersToCreate =
+                new List<SharedParameterBindingManager>();
+
+            SharedParameterBindingManager manager = new SharedParameterBindingManager();
+            manager.Name = "RoomNumber";
+            manager.Type = ParameterType.Text;
+            manager.UserModifiable = false;
+            manager.Description = "A read-only instance parameter used for coordination with external content.";
+            manager.Instance = true; 
+            manager.AddCategory(BuiltInCategory.OST_GenericModel); 
+            manager.ParameterGroup = BuiltInParameterGroup.PG_IDENTITY_DATA;
+            manager.UserVisible = true;
+            sharedParametersToCreate.Add(manager);   // Look up syntax for this automatic initialization.  
+            return sharedParametersToCreate;
         }
 
 
