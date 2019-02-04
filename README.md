@@ -10,6 +10,6 @@ BLOG: [Rooms and Spaces](https://forge.autodesk.com/blog/make-shader-face-room-o
 The Revit plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/Revit3Drooms). Thank you [Tamu](https://github.com/Tamu)!
 
 ## Documentation
-Please check [plugin readme](plugin\README.md) and [design automation readme](designautomation\README.md)
+Please check [plugin readme](plugin\README.md) and [design automation readme](designautomation/README.md)
 
 
