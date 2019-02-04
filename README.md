@@ -16,7 +16,7 @@ This is a basic tutorial on using Cloud-Revit to compute rooms and spaces, autom
 
 The way people move through a building, can influence design.  For a background, see here: [BLOG POST](https://autodeskresearch.com/publications/multitimescales)
 
-### [Click for a DEMO](docs/index.html)
+### [Click for a DEMO](https://wallabyway.github.io/rooms-spaces-revit-plugin/)
 
 ### Reference
 BLOG: [Rooms and Spaces](https://forge.autodesk.com/blog/make-shader-face-room-object-model)
