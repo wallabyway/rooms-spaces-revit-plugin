@@ -18,7 +18,7 @@ This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/R
 5. Start Revit. Load the plugin when Revit asks you 
 6. Wait a moment, check the folder of the assembly dll. One new Revit file is generated. 
 7. Upload the new file to any tool that can view the model in the browser by Forge Viewer. e.g. https://viewer.autodesk.com/ . Check if the rooms are available under **Generic Model**, and if the room number is attached with the shape, as what is shown in the snapshot below:
-    <img src="../designautomation/img/result.png" height="400" width="600">
+    <img src="../designautomation/img/result.png" height="400" >
 
 ## Steps of Cloud Test
 Check [ReadMe](../designautomation/README.md) for details.

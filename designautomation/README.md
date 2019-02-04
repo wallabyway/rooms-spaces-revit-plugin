@@ -40,7 +40,7 @@ DesignAutomationBridge.DesignAutomationReadyEvent += HandleDesignAutomationReady
   
 
    when the status in 7) is **succeeded**, check if the outfile is available in the storage you specificed. Send it to https://viewer.autodesk.com/ to check if the room spaces have been added under **Generic Model** 
-    <img src="img/result.png" height="400" width="600">
+    <img src="img/result.png" height="400" >
 
 
 ## Troubleshooting
