@@ -10,7 +10,7 @@ This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/R
 
 1. Install Revit 2019
 2. Follow the [tutorial](https://knowledge.autodesk.com/support/revit-products/learn-explore/caas/simplecontent/content/my-first-revit-plug-overview.html) to build the project. 
-3. Comment out the line in function OnStartup of [RoomExtractor/RoomExtractor.cs](./RoomExtractor/RoomExtractor.cs). This is for local test.
+3. Comment out the line in function **OnStartup** of [RoomExtractor/RoomExtractor.cs](./RoomExtractor/RoomExtractor.cs). This is for local test.
 ```
     app.ApplicationInitialized += HandleApplicationInitializedEvent;
 ```
