@@ -10,7 +10,7 @@ This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/R
 
 1. Install Revit 2019
 2. Follow the [tutorial](https://knowledge.autodesk.com/support/revit-products/learn-explore/caas/simplecontent/content/my-first-revit-plug-overview.html) to build the project. 
-3. Comment out the line in function OnStartup of [RoomExtractor/RoomExtractor.cs](./RoomExtractor.cs). This is for local test.
+3. Comment out the line in function OnStartup of [RoomExtractor/RoomExtractor.cs](./RoomExtractor/RoomExtractor.cs). This is for local test.
 ```
     app.ApplicationInitialized += HandleApplicationInitializedEvent;
 ```
@@ -18,10 +18,10 @@ This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/R
 5. Start Revit. Load the plugin when Revit asks you 
 6. Wait a moment, check the folder of the assembly dll. One new Revit file is generated. 
 7. Upload the new file to any tool that can view the model in the browser by Forge Viewer. e.g. https://viewer.autodesk.com/ . Check if the rooms are available under **Generic Model**, and if the room number is attached with the shape, as what is shown in the snapshot below:
-    <img src="./designautomation/img/result.png" height="400" width="400">
+    <img src="../designautomation/img/result.png" height="400" width="400">
 
 ## Steps of Cloud Test
-Check [ReadMe](./designautomation/README.md) for details.
+Check [ReadMe](../designautomation/README.md) for details.
 
 
 
