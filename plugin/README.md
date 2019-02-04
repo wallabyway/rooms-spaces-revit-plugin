@@ -21,7 +21,7 @@ This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/R
     <img src="../designautomation/img/result.png" height="400" >
 
 ## Steps of Cloud Test
-Check [ReadMe](../designautomation/README.md) for details.
+Check [ReadMe](designautomation/README.md) for details.
 
 
 
