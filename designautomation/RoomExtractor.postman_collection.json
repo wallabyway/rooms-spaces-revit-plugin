@@ -369,7 +369,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"activityId\": \"{{dasNickName}}.{{activityName}}+{{activityAlias}}\",\r\n  \"arguments\": {\r\n    \"rvtFile\": {\r\n      \"url\": \"https://xiaodongtemp-revitda.s3-us-west-2.amazonaws.com/rac_advanced_sample_project.rvt?AWSAccessKeyId=AKIAIYICOJRKDOTSG7JA&Expires=1548811428&Signature=fpBKVrpBnzOps6oJQ2sVMGVWBrw%3D\"\r\n    },\r\n    \"result\": {\r\n      \"verb\": \"put\",\r\n      \"url\": \"https://xiaodongtemp-revitda.s3-us-west-2.amazonaws.com/revitda_result.rvt?AWSAccessKeyId=AKIAIYICOJRKDOTSG7JA&Expires=1548811451&Signature=uo1%2FcYFjTAsTN658x60cl4Uv2LI%3D\"\r\n    }\r\n  }\r\n}"
+					"raw": "{\r\n  \"activityId\": \"{{dasNickName}}.{{activityName}}+{{activityAlias}}\",\r\n  \"arguments\": {\r\n    \"rvtFile\": {\r\n      \"url\": \"<your url of source file>\"\r\n    },\r\n    \"result\": {\r\n      \"verb\": \"put\",\r\n      \"url\": \"<your url of target file>\"\r\n    }\r\n  }\r\n}"
 				},
 				"url": {
 					"raw": "{{dasApiRoot}}/workitems",
