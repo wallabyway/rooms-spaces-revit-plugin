@@ -39,7 +39,7 @@ namespace RoomExtractor
 
                 DoJob(data);
             }
-            catch(Exception ex)
+            catch(Exception )
             {
                 throw new InvalidOperationException("Could not ini application!");
             }
@@ -69,7 +69,7 @@ namespace RoomExtractor
             if (rvtDoc == null) throw new InvalidOperationException("Could not open document!");
 
             //add shared parameter definition
-            AddSetOfSharedParameters(rvtDoc);  
+            //AddSetOfSharedParameters(rvtDoc);  
 
             try
             {
@@ -171,7 +171,7 @@ namespace RoomExtractor
                                         CurveLoop curveLoop = CurveLoop.Create(profile);
                                         curveLoopList.Add(curveLoop);
                                     }
-                                    catch (Exception ex)
+                                    catch (Exception)
                                     {
                                         //Debug.WriteLine(ex.Message);
                                     }
@@ -233,7 +233,8 @@ namespace RoomExtractor
                             tx.Start("Change P");
 
                             Element readyDS = rvtDoc.GetElement(roomId);
-                            Parameter p = readyDS.LookupParameter("RoomNumber");
+              //Parameter p = readyDS.LookupParameter("RoomNumber");
+              Parameter p = readyDS.get_Parameter( BuiltInParameter.ALL_MODEL_MARK );
                             if (p != null)
                             {
                                 p.Set(room.Number.ToString());
@@ -286,46 +287,46 @@ namespace RoomExtractor
             return filePath;
         }
 
-        public static void AddSetOfSharedParameters(Document doc)
-        {
-            Application app = doc.Application;
+        //public static void AddSetOfSharedParameters(Document doc)
+        //{
+        //    Application app = doc.Application;
 
-            String filePath = GetRandomSharedParameterFileName();
+        //    String filePath = GetRandomSharedParameterFileName();
 
-            app.SharedParametersFilename = filePath;
+        //    app.SharedParametersFilename = filePath;
 
-            DefinitionFile dFile = app.OpenSharedParameterFile();
-            DefinitionGroup dGroup = dFile.Groups.Create("Demo group");
-            List<SharedParameterBindingManager> managers = BuildSharedParametersToCreate();
-            using (Transaction t = new Transaction(doc, "Bind parameters"))
-            {
-                t.Start();
-                foreach (SharedParameterBindingManager manager in managers)
-                {
-                    manager.Definition = dGroup.Definitions.Create(manager.GetCreationOptions());
-                    manager.AddBindings(doc);
-                }
-                t.Commit();
-            }
-        }
+        //    DefinitionFile dFile = app.OpenSharedParameterFile();
+        //    DefinitionGroup dGroup = dFile.Groups.Create("Demo group");
+        //    List<SharedParameterBindingManager> managers = BuildSharedParametersToCreate();
+        //    using (Transaction t = new Transaction(doc, "Bind parameters"))
+        //    {
+        //        t.Start();
+        //        foreach (SharedParameterBindingManager manager in managers)
+        //        {
+        //            manager.Definition = dGroup.Definitions.Create(manager.GetCreationOptions());
+        //            manager.AddBindings(doc);
+        //        }
+        //        t.Commit();
+        //    }
+        //}
 
-        private static List<SharedParameterBindingManager> BuildSharedParametersToCreate()
-        {
-            List<SharedParameterBindingManager> sharedParametersToCreate =
-                new List<SharedParameterBindingManager>();
+        //private static List<SharedParameterBindingManager> BuildSharedParametersToCreate()
+        //{
+        //    List<SharedParameterBindingManager> sharedParametersToCreate =
+        //        new List<SharedParameterBindingManager>();
 
-            SharedParameterBindingManager manager = new SharedParameterBindingManager();
-            manager.Name = "RoomNumber";
-            manager.Type = ParameterType.Text;
-            manager.UserModifiable = false;
-            manager.Description = "A read-only instance parameter used for coordination with external content.";
-            manager.Instance = true; 
-            manager.AddCategory(BuiltInCategory.OST_GenericModel); 
-            manager.ParameterGroup = BuiltInParameterGroup.PG_IDENTITY_DATA;
-            manager.UserVisible = true;
-            sharedParametersToCreate.Add(manager);   // Look up syntax for this automatic initialization.  
-            return sharedParametersToCreate;
-        }
+        //    SharedParameterBindingManager manager = new SharedParameterBindingManager();
+        //    manager.Name = "RoomNumber";
+        //    manager.Type = ParameterType.Text;
+        //    manager.UserModifiable = false;
+        //    manager.Description = "A read-only instance parameter used for coordination with external content.";
+        //    manager.Instance = true; 
+        //    manager.AddCategory(BuiltInCategory.OST_GenericModel); 
+        //    manager.ParameterGroup = BuiltInParameterGroup.PG_IDENTITY_DATA;
+        //    manager.UserVisible = true;
+        //    sharedParametersToCreate.Add(manager);   // Look up syntax for this automatic initialization.  
+        //    return sharedParametersToCreate;
+        //}
 #endregion  
 
     }

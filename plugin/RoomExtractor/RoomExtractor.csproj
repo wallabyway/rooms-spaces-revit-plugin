@@ -32,10 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DesignAutomationBridge">
-      <HintPath>..\..\DesignAutomationBridge.dll</HintPath>
+      <HintPath>RoomExtractor.bundle\Contents\DesignAutomationBridge.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2020\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,9 +54,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /F "$(TargetDir)*.dll" "$(ProjectDir)RoomExtractor.bundle\Contents\"
-xcopy  /s /y  "$(ProjectDir)Autodesk.Forge.Sample.RoomExtractor.addin"  "C:\ProgramData\Autodesk\Revit\Addins\2019\"
-del /F "$(ProjectDir)..\RoomExtractor.zip"
-"C:\Program Files\7-Zip\7z.exe" a -tzip "$(ProjectDir)../RoomExtractor.zip" "$(ProjectDir)RoomExtractor.bundle\"</PostBuildEvent>
+    <PostBuildEvent>rem xcopy /Y /F "$(TargetDir)*.dll" "$(ProjectDir)RoomExtractor.bundle\Contents\"
+rem xcopy  /s /y  "$(ProjectDir)Autodesk.Forge.Sample.RoomExtractor.addin"  "C:\ProgramData\Autodesk\Revit\Addins\2019\"
+rem del /F "$(ProjectDir)..\RoomExtractor.zip"
+rem "C:\Program Files\7-Zip\7z.exe" a -tzip "$(ProjectDir)../RoomExtractor.zip" "$(ProjectDir)RoomExtractor.bundle\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
