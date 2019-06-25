@@ -1,0 +1,5 @@
+C:\a\vs\rooms-spaces-revit-plugin\plugin\RoomExtractor\bin\Debug\RoomExtractor.dll
+C:\a\vs\rooms-spaces-revit-plugin\plugin\RoomExtractor\bin\Debug\RoomExtractor.pdb
+C:\a\vs\rooms-spaces-revit-plugin\plugin\RoomExtractor\bin\Debug\DesignAutomationBridge.dll
+C:\a\vs\rooms-spaces-revit-plugin\plugin\RoomExtractor\obj\Debug\RoomExtractor.dll
+C:\a\vs\rooms-spaces-revit-plugin\plugin\RoomExtractor\obj\Debug\RoomExtractor.pdb
