@@ -2,7 +2,7 @@
 rooms-spaces-revit-plugin
 
 ## Description
-Revit plugin extracts the data of a room, find its boundray, make direct shape of the room, and attach room number to the shape.
+Revit plugin extracts the data of a room, find its boundary, make direct shape of the room, and attach room number to the shape.
 
 This plugin is based on the other sample [Revit3DRoom](https://github.com/Tamu/Revit3Drooms). Thank you [Tamu](https://github.com/Tamu)! While the codes are modified to add shape with the height of the room (lower floor and upper floor), instead fixed value. In addition, the shape is attached with shared parameters that can be translated by Model Derivative of Forge, instead of the custom data that are not translated.
 
